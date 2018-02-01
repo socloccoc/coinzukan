@@ -26,15 +26,19 @@
             </h1>
         </div>
         <div class="col-xs-6 col-sm-8 col-md-4 text-left">
-            <span class="text-large" id="quote_price">
-                {{ isset($infoCoin->price_usd) ? '$ '. $infoCoin->price_usd : '' }}
+            <span class="text-large2" id="quote_price">
+                {!!  isset($infoCoin->price_usd) ? '$ '. $infoCoin->price_usd  : '' !!}
             </span>
-            <span class="text-large  {{ isset($infoCoin->percent_24h) && $infoCoin->percent_24h > 0 ? 'positive_change ' : 'negative_change' }}">
+            <span class="details-text-medium" data-currency-code=""> USD</span>
+            <span class="text-large2  {{ isset($infoCoin->percent_24h) && $infoCoin->percent_24h < 0 ? 'negative_change' : 'positive_change' }}">
                 ({{ isset($infoCoin->percent_24h) ? $infoCoin->percent_24h . '%' : '' }})
             </span>
             <br>
             <small class="text-gray">
                 {{ isset($infoCoin->price_btc) ? number_format($infoCoin->price_btc, 8). ' BTC' : '' }}
+                <span class="details-text-medium  {{ isset($percentChangeByBtc) && !empty($percentChangeByBtc) && $percentChangeByBtc > 0 ? 'positive_change' : 'negative_change' }} ">
+                    (<span data-format-percentage="" data-format-value="{{ isset($percentChangeByBtc) ? $percentChangeByBtc : '' }}">{{ isset($percentChangeByBtc) ? number_format($percentChangeByBtc, 5) . ' %' : '' }}</span>)
+                </span>
             </small>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 hidden-md hidden-lg text-left">
@@ -57,8 +61,8 @@
                 <div class="coin-summary-item-header">
                     <h3 class="details-text-medium">{{ trans('content.HOME_PAGE.market_cap') }}</h3>
                 </div>
-                <div class="coin-summary-item-detail">
-                    {{ isset($infoCoin->market_cap_usd) ? '$ '. number_format($infoCoin->market_cap_usd) : '' }}
+                <div class="coin-summary-item-detail details-text-medium">
+                    {{ isset($infoCoin->market_cap_usd) ? '$ '. number_format($infoCoin->market_cap_usd) . ' USD' : '' }}
                     <br>
                     <span class="text-gray">
                         {{ isset($infoCoin->available_supply) ? number_format($infoCoin->available_supply*$infoCoin->price_btc). ' BTC' : '' }}
@@ -70,8 +74,8 @@
                 <div class="coin-summary-item-header">
                     <h3 class="details-text-medium">{{ trans('content.HOME_PAGE.volume_24h') }}</h3>
                 </div>
-                <div class="coin-summary-item-detail">
-                    {{ isset($infoCoin->volume_24h) ? '$ '. number_format($infoCoin->volume_24h) : '' }}
+                <div class="coin-summary-item-detail details-text-medium">
+                    {{ isset($infoCoin->volume_24h) ? '$ '. number_format($infoCoin->volume_24h) . ' USD' : '' }}
                     <br>
                     <span class="text-gray">
                         {{ isset($infoCoin->volume_24h) ? number_format($infoCoin->volume_24h / Helper::getPriceUsdBySymbol('BTC')) . ' BTC ' : '' }}
@@ -83,7 +87,7 @@
                 <div class="coin-summary-item-header">
                     <h3 class="details-text-medium">{{ trans('content.HOME_PAGE.circulating_supply') }}</h3>
                 </div>
-                <div class="coin-summary-item-detail">
+                <div class="coin-summary-item-detail details-text-medium">
                     {{ isset($infoCoin->available_supply) ? number_format($infoCoin->available_supply) . ' '. $infoCoin->symbol : '' }}
                 </div>
             </div>
@@ -91,7 +95,7 @@
                 <div class="coin-summary-item-header">
                     <h3 class="details-text-medium">{{ trans('content.HOME_PAGE.max_supply') }}</h3>
                 </div>
-                <div class="coin-summary-item-detail">
+                <div class="coin-summary-item-detail details-text-medium">
                     {{ isset($infoCoin->max_supply) ? number_format($infoCoin->max_supply).' '.(isset($infoCoin->symbol) ? $infoCoin->symbol : '') : '?' }}
                 </div>
             </div>
@@ -165,7 +169,7 @@
                         {{ isset($infoCoin->coin_name) && !empty($infoCoin->coin_name) ? $infoCoin->coin_name .' '. trans('content.HOME_PAGE.market') : '' }}
                     </h2>
                     <div class="table-responsive" style="width: 100%;">
-                        <table id="listDataMarkets" class="display" cellspacing="0" width="100%">
+                        <table id="listDataMarkets" class="table no-border table-condensed dataTable no-footer" role="grid" width="100%">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -247,8 +251,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.jqueryui.min.js"></script>
     <script src="js/chartOfMarketCapDetailPage.js"></script>
     <script>
         $( document ).ready(function() {
@@ -258,16 +260,14 @@
                $('.nav-tabs li:nth-child(1), #charts_cap').removeClass('active');
                $('.nav-tabs li:nth-child(2), #markets_cap').addClass('active');
             }
-
             $('#listDataMarkets').DataTable({
-                "bLengthChange": false,
-                "bInfo": false,
-                "bPaginate": true,
-                responsive: true,
-                "pageLength": 100,
-                "pagingType": "simple",
-                searching: false,
-            });
+                    "bPaginate": false,
+                    "bLengthChange": false,
+                    "bFilter": false,
+                    "bInfo": false,
+                    "bAutoWidth": false,
+                }
+            );
         });
     </script>
 

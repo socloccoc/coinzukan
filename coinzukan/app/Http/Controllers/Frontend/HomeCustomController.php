@@ -195,11 +195,17 @@ class HomeCustomController extends BaseController {
           $listUnstyled = ListUnstyledJapan::where('coin_name','=',$coinConvert)->first();
         }
         $infoCoin = $this->marketCapRepository->findCoinByName($coins);
+        $inforBtc = $this->marketCapRepository->findCoinByName('Bitcoin');
+        //$percentChangeByBtc = (($infoCoin->percent_24h * $infoCoin->price_usd) / ($inforBtc->percent_24h * $inforBtc->price_usd)) - ($infoCoin->price_usd / $inforBtc->price_usd);
+        $percentChangeByBtc = ((1121.03 + (2.05/100 * 1121.03)) / (9923.03+(-2.89/100 * 9923.03))) - (1121.03 / 9923.03);
+        dd($percentChangeByBtc);
+        dd($percentChangeByBtc);
+        //9636.254433, 1144.011115 , 0.11871947995 , 0.11297254971
         if($infoCoin){
             $listMarkets = $this->marketCapRepository->getMarketBySymbol($infoCoin->symbol)->get();
             $getPairId = $this->marketCapRepository->getPairIdBySymbol($infoCoin->symbol);
             $pairId = isset($getPairId) ? $getPairId->id : '';
-            return view('coins.detailcoinmarketcap', compact('infoCoin', 'listMarkets', 'pairId','listUnstyled'));
+            return view('coins.detailcoinmarketcap', compact('infoCoin', 'listMarkets', 'pairId','listUnstyled', 'percentChangeByBtc'));
         }else{
             abort('404');
         }

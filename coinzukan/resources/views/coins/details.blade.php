@@ -18,8 +18,8 @@
             </h1>
         </div>
         <div class="col-xs-6 col-sm-8 col-md-4 text-left">
-            <span class="text-large" id="quote_price"></span> <span
-                    class="text-large {!! isset($inforBaseTarget->change_24h) && $inforBaseTarget->change_24h > 0 ? 'positive_change' : 'negative_change'  !!} "></span>
+            <span class="text-large2" id="quote_price"></span> <span
+                    class="text-large2 {!! isset($inforBaseTarget->change_24h) && $inforBaseTarget->change_24h > 0 ? 'positive_change' : 'negative_change'  !!} "></span>
             <br>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 hidden-md hidden-lg text-left">
